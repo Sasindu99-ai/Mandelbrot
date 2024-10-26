@@ -70,9 +70,7 @@ class Mandelbrot:
 		"""
         self.app = app
         # screen array
-        self.screenArray = np.full(shape=(width, height, 3),
-                                   fill_value=[0, 0, 0],
-                                   dtype=np.uint32)
+        self.screenArray = np.full(shape=(width, height, 3), fill_value=[0, 0, 0], dtype=np.uint32)
         # taichi init
         ti.init(arch=ti.arm64)
 
@@ -82,8 +80,7 @@ class Mandelbrot:
         # screen field
         self.screenField = ti.Vector.field(3, ti.uint32, (width, height))
         # texture field
-        self.textureField = ti.Vector.field(3, ti.uint32,
-                                            self.texture.get_size())
+        self.textureField = ti.Vector.field(3, ti.uint32, self.texture.get_size())
         self.textureField.from_numpy(self.texture.array)
 
         # mandelbrot set configurations
@@ -101,8 +98,7 @@ class Mandelbrot:
 		Changes the texture
 		:return: None
 		"""
-        nextIndex = (self.textures.index(self.texture) + 1) % len(
-            self.textures)
+        nextIndex = (self.textures.index(self.texture) + 1) % len(self.textures)
         self.texture = self.textures[nextIndex]
         self.textureField.from_numpy(self.texture.array)
 
@@ -116,8 +112,7 @@ class Mandelbrot:
         return now * self.appSpeed
 
     @ti.kernel
-    def render(self, maxIterations: ti.int32, zoomLevel: ti.float32,
-               dx: ti.float32, dy: ti.float32):
+    def render(self, maxIterations: ti.int32, zoomLevel: ti.float32, dx: ti.float32, dy: ti.float32):
         """
 		Renders the mandelbrot set
 		:param maxIterations: ti.int32: The maximum number of iterations
@@ -128,8 +123,7 @@ class Mandelbrot:
 		"""
         for x, y in self.screenField:
             # Complex number
-            c = ti.Vector([(x - offset[0]) * zoomLevel - dx,
-                           (y - offset[1]) * zoomLevel - dy])
+            c = ti.Vector([(x - offset[0]) * zoomLevel - dx, (y - offset[1]) * zoomLevel - dy])
             # z = 0
             z = ti.Vector([0.0, 0.0])
             # Mandelbrot set
@@ -168,9 +162,7 @@ class Mandelbrot:
         # auto zoom out to center
         if keyEvent[pg.K_z] and time.time() - self.lastCEvent > 0.5:
             self.lastCEvent = time.time()
-            self.autoZoomOutStartPoints = [
-                self.zoom, self.increment[0], self.increment[1], self.maxIter
-            ]
+            self.autoZoomOutStartPoints = [self.zoom, self.increment[0], self.increment[1], self.maxIter]
             self.autoZoomOutToCenter()
 
         # movement
@@ -231,8 +223,7 @@ class Mandelbrot:
 		:return: None
 		"""
         self.control()
-        self.render(self.maxIter, self.zoom, self.increment[0],
-                    self.increment[1])
+        self.render(self.maxIter, self.zoom, self.increment[0], self.increment[1])
         self.screenArray = self.screenField.to_numpy()
 
     def draw(self) -> None:
@@ -271,8 +262,7 @@ class Mandelbrot:
 		Auto zoom out to center
 		:return: None
 		"""
-        if self.zoom > Global.zoom or Global.zoom - self.autoZoomOutStartPoints[
-                0] == 0:
+        if self.zoom > Global.zoom or Global.zoom - self.autoZoomOutStartPoints[0] == 0:
             return
 
         self.keyPressBlocked = True
@@ -282,16 +272,13 @@ class Mandelbrot:
         self.zoom *= invScale
         self.vel *= invScale
 
-        improvement = (Global.zoom - self.zoom) / (
-            Global.zoom - self.autoZoomOutStartPoints[0])
+        improvement = (Global.zoom - self.zoom) / (Global.zoom - self.autoZoomOutStartPoints[0])
 
         self.increment[0] = self.autoZoomOutStartPoints[1] * improvement
         self.increment[1] = self.autoZoomOutStartPoints[2] * improvement
 
         if self.autoZoomOutStartPoints[3] > Global.maxIter:
-            self.maxIter = int(Global.maxIter +
-                               (self.autoZoomOutStartPoints[3] -
-                                Global.maxIter) * improvement)
+            self.maxIter = int(Global.maxIter + (self.autoZoomOutStartPoints[3] - Global.maxIter) * improvement)
             self.maxIter = min(max(self.maxIter, 2), self.maxIterLimit)
 
         if self.zoom > Global.zoom:

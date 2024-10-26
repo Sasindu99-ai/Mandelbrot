@@ -1,9 +1,6 @@
 import numpy as np
 
-__all__ = [
-    'res', 'width', 'height', 'offset', 'maxIter', 'maxIterLimit', 'appSpeed',
-    'zoom', 'scale'
-]
+__all__ = ['res', 'width', 'height', 'offset', 'maxIter', 'maxIterLimit', 'appSpeed', 'zoom', 'scale']
 
 # Define the image size
 res = width, height = 800, 800

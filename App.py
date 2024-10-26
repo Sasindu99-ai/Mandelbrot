@@ -46,5 +46,4 @@ class App:
             self.mandelbrot.run()
             pg.display.flip()
             self.clock.tick()
-            pg.display.set_caption(
-                f'Mandelbrot - FPS: {self.clock.get_fps(): .2f}')
+            pg.display.set_caption(f'Mandelbrot - FPS: {self.clock.get_fps(): .2f}')

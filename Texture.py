@@ -53,8 +53,7 @@ class Texture:
             raise FileNotFoundError(f'No texture found for {file}')
         self._texture = pg.image.load(self._file)
         self._size = min(self._texture.get_size()) - 1
-        self._array = pg.surfarray.array3d(
-            self._texture).astype(dtype=np.uint32)
+        self._array = pg.surfarray.array3d(self._texture).astype(dtype=np.uint32)
 
     @property
     def size(self) -> int:
