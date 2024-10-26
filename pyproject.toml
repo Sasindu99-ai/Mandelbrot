@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "mandelbrot"
+version = "0.1.0"
+description = "Interactive Mandelbrot fractal renderer using Pygame and Taichi. Features include dynamic texture swapping, real-time controls for zoom and movement, customizable rendering quality, and smooth performance with Taichi kernels. Perfect for exploring fractal visuals with adjustable detail and style."
+authors = ["Sasindu Sulochana <sasindusulochana99@gmail.com>"]
+license = "LICENSE"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+pygame = "^2.6.1"
+numpy = "^2.1.2"
+taichi = "^1.7.2"
+mypy = "^1.10.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

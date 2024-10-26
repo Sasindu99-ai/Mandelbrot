@@ -1,0 +1,9 @@
+*.lock
+
+.idea/*
+.my_cache/*
+
+__pycache__/*
+*/__pycache__/*
+
+*.DS_Store
